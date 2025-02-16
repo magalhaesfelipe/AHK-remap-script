@@ -1,7 +1,16 @@
-﻿#NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
+#SingleInstance force
+#NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
 ; #Warn  ; Enable warnings to assist with detecting common errors.
 SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
+
+; Request admin privileges if not already elevated
+if not A_IsAdmin
+{
+    Run *RunAs "%A_ScriptFullPath%"  ; Restart script as admin
+    ExitApp  ; Exit current script instance
+}
+
 
 ~CapsLock & a::
     Loop
@@ -42,3 +51,17 @@ CapsLock & i::Send, {Up}
 ; Alt key combinations
 !k::Send, !{Down}
 !i::Send, !{Up}
+!j::Send, !{Left}
+!l::Send, !{Right}
+
+; Windows Key + I = Windows Key + Up Arrow (single press)
+#i::
+    SendInput, {LWin Down}{Up Down}
+    SendInput, {Up Up}{LWin Up}
+return
+
+; Windows Key + K = Windows Key + Down Arrow (single press)
+#k::
+    SendInput, {LWin Down}{Down Down}
+    SendInput, {Down Up}{LWin Up}
+return
